@@ -18,7 +18,7 @@ import scraper.api.response.ResponseBuilder;
 import scraper.api.response.ResponseError;
 
 /**
- * Servlet implementation class Info
+ * Servlet implementation class Info 
  */
 public class Info extends HttpServlet implements Servlet {
 

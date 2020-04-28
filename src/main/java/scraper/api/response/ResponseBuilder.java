@@ -36,7 +36,14 @@ public class ResponseBuilder {
             LOG.log(Level.SEVERE, null, e);
             return null;
         }
-
+    }
+    public static String getJson_ResponseError(ResponseError obj) {
+        try {
+            return budujJsonString(obj);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, null, e);
+            return null;
+        }
     }
 
     private static String budujJsonString(Object o) throws JsonProcessingException {

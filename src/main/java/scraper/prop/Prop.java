@@ -9,49 +9,47 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- *
+ * klasa udostępnia dane z pliku właściwości
+ * 
  * @author adobu
  */
 public class Prop {
 
-    private final String version;
-    private final String artifactId;
-    private final String autor;
-    private final String kierunek;
-    private final String uczelnia;
+	private final String version;
+	private final String artifactId;
+	private final String autor;
+	private final String kierunek;
+	private final String uczelnia;
 
-    public Prop() throws IOException {
-        final Properties properties = new Properties();
-        properties.load(this.getClass().getClassLoader().getResourceAsStream("project.properties"));
-        version = properties.getProperty("version");
-        artifactId = properties.getProperty("artifactId");
-        autor = properties.getProperty("autor");
-        kierunek = properties.getProperty("kierunek");
-        uczelnia = properties.getProperty("uczelnia");
-    }
-    private void loadProp(){
-        
-    }
+	public Prop() throws IOException {
+		final Properties properties = new Properties();
+		properties.load(this.getClass().getClassLoader().getResourceAsStream("project.properties"));
+		version = properties.getProperty("version");
+		artifactId = properties.getProperty("artifactId");
+		autor = properties.getProperty("autor");
+		kierunek = properties.getProperty("kierunek");
+		uczelnia = properties.getProperty("uczelnia");
+	}
 
-    public String getVersion() {
-        return version;
-    }
+	public String getVersion() {
+		return version;
+	}
 
-    public String getArtifactId() {
-        return artifactId;
-    }
+	public String getArtifactId() {
+		return artifactId;
+	}
 
-    public String getAutor() {
-        return autor;
-    }
+	public String getAutor() {
+		return autor;
+	}
 
-    public String getKierunek() {
-        return kierunek;
-    }
+	public String getKierunek() {
+		return kierunek;
+	}
 
-    public String getUczelnia() {
-        return uczelnia;
-    }
-    
+	public String getUczelnia() {
+		return uczelnia;
+	}
+
 
 }

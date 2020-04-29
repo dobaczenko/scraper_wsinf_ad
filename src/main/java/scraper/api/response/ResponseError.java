@@ -1,5 +1,7 @@
 package scraper.api.response;
 
+import scraper.api.err.ERR_INFO;
+
 public class ResponseError {
 	private String errorId;
 	private String errorDescription;
@@ -7,9 +9,9 @@ public class ResponseError {
 	public ResponseError() {
 	}
 
-	public ResponseError(String errorId, String errorDescription) {
-		this.errorId = errorId;
-		this.errorDescription = errorDescription;
+	public ResponseError(ERR_INFO err) {
+		this.errorId = err.getKey();
+		this.errorDescription = err.getDesc();
 	}
 
 	public String getErrorId() {

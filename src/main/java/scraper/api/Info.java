@@ -19,7 +19,7 @@ import scraper.api.response.ResponseBuilder;
 import scraper.api.response.ResponseError;
 
 /**
- * Servlet implementation class Info 
+ * Servlet implementation class Info
  */
 public class Info extends HttpServlet implements Servlet {
 
@@ -27,8 +27,6 @@ public class Info extends HttpServlet implements Servlet {
 	private static final Logger LOG = Logger.getLogger(Info.class.getName());
 
 	private static String TEMP_AUTH_KEY = "bf0f6bbeb42167ab5a8a4cb90ec95db6";// PanDaTrzy w md5
-
-	
 
 	/**
 	 * Default constructor.
@@ -38,7 +36,8 @@ public class Info extends HttpServlet implements Servlet {
 	}
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException,
+			IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 
@@ -58,7 +57,9 @@ public class Info extends HttpServlet implements Servlet {
 		switch (splits[splits.length - 1]) {
 		case "abouts":
 			// metoda info
-			apiAbouts(response, request);
+			if (apiAbouts(response, request)) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			}
 			break;
 		// check_db
 
@@ -68,7 +69,7 @@ public class Info extends HttpServlet implements Servlet {
 		}
 	}
 
-	private void apiAbouts(HttpServletResponse response, HttpServletRequest request) {
+	private boolean apiAbouts(HttpServletResponse response, HttpServletRequest request) {
 		try {
 			// odczyt request
 			StringBuilder bufor = new StringBuilder();
@@ -91,13 +92,14 @@ public class Info extends HttpServlet implements Servlet {
 			try (PrintWriter out = response.getWriter()) {
 				if (respErr != null) {
 					out.print(ResponseBuilder.getJson_ResponseError(respErr));
-					return;
+					return true;
 				}
 				out.print(ResponseBuilder.getJson_ResponseInfo());
-
 			}
+			return true;
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, null, e);
+			return false;
 		}
 	}
 
@@ -116,7 +118,8 @@ public class Info extends HttpServlet implements Servlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException,
+			IOException {
 		processRequest(request, response);
 	}
 
@@ -125,7 +128,8 @@ public class Info extends HttpServlet implements Servlet {
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException,
+			IOException {
 		processRequest(request, response);
 	}
 

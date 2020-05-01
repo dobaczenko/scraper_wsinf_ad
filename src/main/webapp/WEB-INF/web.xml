@@ -8,7 +8,7 @@
         <session-timeout>300</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>strona_glowna.jsp</welcome-file>
+        <welcome-file>gui.html</welcome-file>
     </welcome-file-list>
     <servlet>
         <description></description>

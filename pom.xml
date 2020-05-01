@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.wsinf.scraper</groupId>
     <artifactId>scraper</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.0</version>
     <name>scraper</name>
     <packaging>war</packaging>
     <description>Program zrzucający wybrane elementy strony do bazy danych.</description>

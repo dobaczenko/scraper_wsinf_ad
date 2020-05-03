@@ -20,6 +20,7 @@ public class Prop {
 	private final String autor;
 	private final String kierunek;
 	private final String uczelnia;
+	private final String bazaRodzaj;
 
 	public Prop() throws IOException {
 		final Properties properties = new Properties();
@@ -29,6 +30,7 @@ public class Prop {
 		autor = properties.getProperty("autor");
 		kierunek = properties.getProperty("kierunek");
 		uczelnia = properties.getProperty("uczelnia");
+		this.bazaRodzaj=properties.getProperty("bazaRodzaj");
 	}
 
 	public String getVersion() {
@@ -50,6 +52,11 @@ public class Prop {
 	public String getUczelnia() {
 		return uczelnia;
 	}
+
+	public String getBazaRodzaj() {
+		return bazaRodzaj;
+	}
+	
 
 
 }

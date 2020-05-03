@@ -5,57 +5,71 @@
  */
 package scraper.api.response;
 
+import java.util.List;
+
+import scraper.api.response.response_info_obj.RejestrZapytanResp;
+
 /**
  *
  * @author adobu
  */
 public class ResponseInfo {
-    private String autor;
-    private String kierunek;
-    private String uczelnia;
-    private String wersja;
+	private String autor;
+	private String kierunek;
+	private String uczelnia;
+	private String wersja;
+	private List<RejestrZapytanResp> rejestrZapytan;
 
-    public ResponseInfo() {
-    }
+	public ResponseInfo() {
+	}
 
-    public ResponseInfo(String autor, String kierunek, String uczelnia, String wersja) {
-        this.autor = autor;
-        this.kierunek = kierunek;
-        this.uczelnia = uczelnia;
-        this.wersja = wersja;
-    }
+	public ResponseInfo(String autor, String kierunek, String uczelnia, String wersja,
+			List<RejestrZapytanResp> rejestrZapytan) {
+		this.autor = autor;
+		this.kierunek = kierunek;
+		this.uczelnia = uczelnia;
+		this.wersja = wersja;
+		this.rejestrZapytan = rejestrZapytan;
+	}
 
-    public String getAutor() {
-        return autor;
-    }
+	public String getAutor() {
+		return autor;
+	}
 
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
 
-    public String getKierunek() {
-        return kierunek;
-    }
+	public String getKierunek() {
+		return kierunek;
+	}
 
-    public void setKierunek(String kierunek) {
-        this.kierunek = kierunek;
-    }
+	public void setKierunek(String kierunek) {
+		this.kierunek = kierunek;
+	}
 
-    public String getUczelnia() {
-        return uczelnia;
-    }
+	public String getUczelnia() {
+		return uczelnia;
+	}
 
-    public void setUczelnia(String uczelnia) {
-        this.uczelnia = uczelnia;
-    }
+	public void setUczelnia(String uczelnia) {
+		this.uczelnia = uczelnia;
+	}
 
-    public String getWersja() {
-        return wersja;
-    }
+	public String getWersja() {
+		return wersja;
+	}
 
-    public void setWersja(String wersja) {
-        this.wersja = wersja;
-    }
-    
-    
+	public void setWersja(String wersja) {
+		this.wersja = wersja;
+	}
+
+	public List<RejestrZapytanResp> getRejestrZapytan() {
+		return rejestrZapytan;
+	}
+
+	public void setRejestrZapytan(List<RejestrZapytanResp> rejestrZapytan) {
+		this.rejestrZapytan = rejestrZapytan;
+	}
+
 }

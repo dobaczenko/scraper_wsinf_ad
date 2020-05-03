@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true">
+	<Resource auth="Container"
+		driverClassName="com.mysql.jdbc.Driver" type="javax.sql.DataSource"
+		idleMaxAge="240" idleConnectionTestPeriod="60" partitionCount="3"
+		acquireIncrement="1" maxConnectionsPerPartition="10"
+		minConnectionsPerPartition="3" statementsCacheSize="50"
+		releaseHelperThreads="4" name="jdbc/mysqldb" username="root"
+		url="jdbc:mysql://127.0.0.1:3306/pp_scraper_wsinf?useEncoding=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull" />
+</Context>

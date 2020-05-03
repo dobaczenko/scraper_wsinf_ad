@@ -3,6 +3,7 @@ package scraper.api;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +18,7 @@ import scraper.api.request.RequestBuilder;
 import scraper.api.request.RequestInfo;
 import scraper.api.response.ResponseBuilder;
 import scraper.api.response.ResponseError;
+import scraper.db.uzywalne.ObslugaDB;
 
 /**
  * Servlet implementation class Info
@@ -57,7 +59,7 @@ public class Info extends HttpServlet implements Servlet {
 		switch (splits[splits.length - 1]) {
 		case "abouts":
 			// metoda info
-			if (apiAbouts(response, request)) {
+			if (!apiAbouts(response, request)) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
 			break;
@@ -94,7 +96,11 @@ public class Info extends HttpServlet implements Servlet {
 					out.print(ResponseBuilder.getJson_ResponseError(respErr));
 					return true;
 				}
-				out.print(ResponseBuilder.getJson_ResponseInfo());
+				// wygenerowanie odpowiedzi
+				out.print(
+						ResponseBuilder.getJson_ResponseInfo(ObslugaDB.getPoleceniaDB().rejestrZapytan_selectLista()));
+				// zapis w bazie informacji o zapytaniu
+				ObslugaDB.getPoleceniaDB().rejestrZapytan_insert(new Date(), "about");
 			}
 			return true;
 		} catch (Exception e) {

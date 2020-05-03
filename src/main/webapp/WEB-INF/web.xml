@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
-    <context-param>
-        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
-        <param-value>true</param-value>
-    </context-param>
-    <session-config>
-        <session-timeout>300</session-timeout>
-    </session-config>
-    <welcome-file-list>
-        <welcome-file>gui.html</welcome-file>
-    </welcome-file-list>
-    <servlet>
-        <description></description>
-        <display-name>Info</display-name>
-        <servlet-name>Info</servlet-name>
-        <servlet-class>scraper.api.Info</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Info</servlet-name>
-        <url-pattern>/api/info/*</url-pattern>
-    </servlet-mapping>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+	<context-param>
+		<param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<session-config>
+		<session-timeout>300</session-timeout>
+	</session-config>
+	<welcome-file-list>
+		<welcome-file>gui.html</welcome-file>
+	</welcome-file-list>
+	<!-- Baza danych -->
+	<resource-ref>
+		<description>JDBC Connection Pool</description>
+		<res-ref-name>jdbc/mysqldb</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+	<servlet>
+		<servlet-name>ConnectorDB</servlet-name>
+		<servlet-class>scraper.db.ConnectorDB</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- reszta -->
+	<servlet>
+		<description></description>
+		<display-name>Info</display-name>
+		<servlet-name>Info</servlet-name>
+		<servlet-class>scraper.api.Info</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Info</servlet-name>
+		<url-pattern>/api/info/*</url-pattern>
+	</servlet-mapping>
 </web-app>

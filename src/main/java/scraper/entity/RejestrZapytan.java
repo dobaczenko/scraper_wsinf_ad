@@ -16,12 +16,14 @@ public class RejestrZapytan {
 	private Integer id;
 	private Date dataZapytania;
 	private String kodZapytania;
+	private String userId;
 
-	public RejestrZapytan(Integer id, Date dataZapytania, String kodZapytania) {
+	public RejestrZapytan(Integer id, Date dataZapytania, String kodZapytania,String userId) {
 		super();
 		this.id = id;
 		this.dataZapytania = dataZapytania;
 		this.kodZapytania = kodZapytania;
+		this.userId=userId;
 	}
 
 	public RejestrZapytan() {
@@ -51,5 +53,14 @@ public class RejestrZapytan {
 	public void setKodZapytania(String kodZapytania) {
 		this.kodZapytania = kodZapytania;
 	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	
 
 }

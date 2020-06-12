@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import scraper.api.response.response_info_obj.RejestrWynikowResp;
 import scraper.api.response.response_info_obj.RejestrZapytanResp;
+import scraper.entity.RejestrWynikow;
 import scraper.entity.RejestrZapytan;
 import scraper.prop.Prop;
 
@@ -41,11 +43,54 @@ public class ResponseBuilder {
 			List<RejestrZapytanResp> rejestrDlaJSON = new ArrayList<>();
 			if (listaZapytan != null) {
 				for (RejestrZapytan rz : listaZapytan) {
-					rejestrDlaJSON.add(new RejestrZapytanResp(rz.getDataZapytania(), rz.getKodZapytania()));
+					rejestrDlaJSON
+							.add(new RejestrZapytanResp(rz.getDataZapytania(), rz.getKodZapytania(), rz.getUserId()));
 				}
 			}
 
 			obj.setRejestrZapytan(rejestrDlaJSON);
+
+			return budujJsonString(obj);
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, null, e);
+			return null;
+		}
+	}
+
+	/**
+	 * zwraca ResponseScraper w postaci string
+	 * 
+	 * @return
+	 */
+	public static String getJson_ResponseScraper(String podsumowanie) {
+		try {
+			Prop prop = new Prop();
+			ResponseScraper obj = new ResponseScraper();
+			obj.setPodsumowanie(podsumowanie);
+
+			return budujJsonString(obj);
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, null, e);
+			return null;
+		}
+	}
+
+	/**
+	 * zwraca listę scrapowanych elementow w postaci string
+	 * 
+	 * @return
+	 */
+	public static String getJson_ResponseListaScrapowanychElementow(List<RejestrWynikow> lista) {
+		try {
+			ResponseListaScrapowanychElementow obj = new ResponseListaScrapowanychElementow();
+
+			List<RejestrWynikowResp> listaScrapowanych = new ArrayList<>();
+			for (RejestrWynikow rw : lista) {
+				listaScrapowanych.add(new RejestrWynikowResp(rw.getDataOperacji(), rw.getId(), rw.getTypZawartosci(),
+						rw.getUrl(), rw.getZawartosc(), rw.getUserId()));
+			}
+
+			obj.setListaelementow(listaScrapowanych);
 
 			return budujJsonString(obj);
 		} catch (Exception e) {

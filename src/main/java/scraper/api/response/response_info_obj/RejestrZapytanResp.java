@@ -8,15 +8,17 @@ public class RejestrZapytanResp {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date data;
 	private String operacja;
+	private String user;
 
 	public RejestrZapytanResp() {
 		super();
 	}
 
-	public RejestrZapytanResp(Date data, String operacja) {
+	public RejestrZapytanResp(Date data, String operacja, String user) {
 		super();
 		this.data = data;
 		this.operacja = operacja;
+		this.user = user;
 	}
 
 	public Date getData() {
@@ -33,6 +35,14 @@ public class RejestrZapytanResp {
 
 	public void setOperacja(String operacja) {
 		this.operacja = operacja;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 }

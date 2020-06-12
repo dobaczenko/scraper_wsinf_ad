@@ -36,4 +36,14 @@
 		<servlet-name>Info</servlet-name>
 		<url-pattern>/api/info/*</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<description></description>
+		<display-name>Scraper</display-name>
+		<servlet-name>Scraper</servlet-name>
+		<servlet-class>scraper.api.Scraper</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Scraper</servlet-name>
+		<url-pattern>/api/scraper/*</url-pattern>
+	</servlet-mapping>
 </web-app>

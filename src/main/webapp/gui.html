@@ -8,16 +8,25 @@
 	<h1 style="color: green;">Test Api</h1>
 
 	<p>
-	Testowy klucz dostêpu do czasu wprowadzenia bazy: "bf0f6bbeb42167ab5a8a4cb90ec95db6"
-	<br>
+		Testowy klucz dostêpu do czasu wprowadzenia bazy:
+		"bf0f6bbeb42167ab5a8a4cb90ec95db6"
+		<br>
 		<input type="text" id="klucz" placeholder="Klucz dostêpu">
-		<button onclick="aboutApi()">About</button>
-		<br><br>
+		<br>
+		<input type="text" id="adres" placeholder="adres strony">
+		<br>
+		<button onclick="aboutApi()">About</button><br>
+		<button onclick="scrapujApi()">scrapuj</button><br>
+		<button onclick="wynikiScrapowaniaApi()">wyniki scrapowania</button><br>
+		<br>
+		<br>
 
-	Request:<br>
+		Request:
+		<br>
 	<pre id="req" style="color: red"></pre>
 	<br>
-	Response:<br>
+	Response:
+	<br>
 	<p class="result" style="color: green"></p>
 
 	</p>

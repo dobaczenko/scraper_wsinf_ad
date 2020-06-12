@@ -13,9 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import scraper.Scrap;
 import scraper.api.err.ERR_INFO;
 import scraper.api.request.RequestBuilder;
 import scraper.api.request.RequestInfo;
+import scraper.api.request.RequestListaScrapowanychElementow;
+import scraper.api.request.RequestScraper;
 import scraper.api.response.ResponseBuilder;
 import scraper.api.response.ResponseError;
 import scraper.db.uzywalne.ObslugaDB;
@@ -24,20 +27,17 @@ import scraper.entity.UserDane;
 /**
  * Servlet implementation class Info
  */
-public class Info extends HttpServlet implements Servlet {
+public class Scraper extends HttpServlet implements Servlet {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOG = Logger.getLogger(Info.class.getName());
+	private static final Logger LOG = Logger.getLogger(Scraper.class.getName());
 
-	// klucz do testowania
-	// private static String TEMP_AUTH_KEY = "bf0f6bbeb42167ab5a8a4cb90ec95db6";//
-	// PanDaTrzy w md5
 	private UserDane user = null;
 
 	/**
 	 * Default constructor.
 	 */
-	public Info() {
+	public Scraper() {
 		this.user = null;
 	}
 
@@ -51,7 +51,7 @@ public class Info extends HttpServlet implements Servlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		System.out.println("Api Info: " + pathInfo);
+		System.out.println("Scraper Info: " + pathInfo);
 
 		String[] splits = pathInfo.split("/");
 		if (splits.length != 2) {
@@ -60,13 +60,18 @@ public class Info extends HttpServlet implements Servlet {
 		}
 		// url wskazuje na wykonanie operacji
 		switch (splits[splits.length - 1]) {
-		case "abouts":
+		case "scrapuj":
 			// metoda info
-			if (!apiAbouts(response, request)) {
+			if (!apiScrapuj(response, request)) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
 			break;
-		// check_db
+		case "wyniki":
+			// metoda info
+			if (!apiListaScrapowanychElementow(response, request)) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			}
+			break;
 
 		default:
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -74,8 +79,9 @@ public class Info extends HttpServlet implements Servlet {
 		}
 	}
 
-	private boolean apiAbouts(HttpServletResponse response, HttpServletRequest request) {
+	private boolean apiScrapuj(HttpServletResponse response, HttpServletRequest request) {
 		try {
+
 			// odczyt request
 			StringBuilder bufor = new StringBuilder();
 			BufferedReader bf = request.getReader();
@@ -83,10 +89,53 @@ public class Info extends HttpServlet implements Servlet {
 			while ((line = bf.readLine()) != null) {
 				bufor.append(line);
 			}
-			RequestInfo in = RequestBuilder.getRequestInfo(bufor.toString());
+			RequestScraper in = RequestBuilder.getRequestScraper((bufor.toString()));
 
-			// coś tam na odczytanych danych, w tym mniejscu normalnie byłaby jakaś
-			// klasa/metoda operacyjna, ale na razie tak na skróty
+			// weryfikacja klucza
+			ResponseError respErr = null;
+			if (!testAuthKey(in.getAuthKey())) {
+				respErr = new ResponseError(ERR_INFO.BAD_KEY);
+			}
+			String url = in.getUrl();
+
+			Scrap scrap = new Scrap(url, this.user.getUserId());
+			scrap.ustawienia_pobierzNaglowki(true);
+			boolean wynikScrapowania = scrap.wykonaj();
+
+			// odpowiedź
+			response.setContentType("application/json,charset=UTF-8");
+			try (PrintWriter out = response.getWriter()) {
+				if (respErr != null) {
+					out.print(ResponseBuilder.getJson_ResponseError(respErr));
+					return true;
+				}
+				// wygenerowanie odpowiedzi
+				out.print(ResponseBuilder
+						.getJson_ResponseScraper((wynikScrapowania ? "Operacja wykonana" : "operacja nieudana")));
+				// zapis w bazie informacji o zapytaniu
+				ObslugaDB.getPoleceniaDB().rejestrZapytan_insert(new Date(), "apiScrapuj", user.getUserId());
+			}
+			return true;
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, null, e);
+			return false;
+		}
+	}
+
+	private boolean apiListaScrapowanychElementow(HttpServletResponse response, HttpServletRequest request) {
+		try {
+
+			// odczyt request
+			StringBuilder bufor = new StringBuilder();
+			BufferedReader bf = request.getReader();
+			String line;
+			while ((line = bf.readLine()) != null) {
+				bufor.append(line);
+			}
+			RequestListaScrapowanychElementow in = RequestBuilder
+					.getRequestListaScrapowanychElementow((bufor.toString()));
+
+			// weryfikacja klucza
 			ResponseError respErr = null;
 			if (!testAuthKey(in.getAuthKey())) {
 				respErr = new ResponseError(ERR_INFO.BAD_KEY);
@@ -100,10 +149,11 @@ public class Info extends HttpServlet implements Servlet {
 					return true;
 				}
 				// wygenerowanie odpowiedzi
-				out.print(
-						ResponseBuilder.getJson_ResponseInfo(ObslugaDB.getPoleceniaDB().rejestrZapytan_selectLista()));
+				out.print(ResponseBuilder.getJson_ResponseListaScrapowanychElementow(
+						ObslugaDB.getPoleceniaDB().rejestrWynikow_selectAll()));
 				// zapis w bazie informacji o zapytaniu
-				ObslugaDB.getPoleceniaDB().rejestrZapytan_insert(new Date(), "about", user.getUserId());
+				ObslugaDB.getPoleceniaDB().rejestrZapytan_insert(new Date(), "apiListaScrapowanychElementow",
+						user.getUserId());
 			}
 			return true;
 		} catch (Exception e) {

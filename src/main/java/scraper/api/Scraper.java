@@ -96,11 +96,6 @@ public class Scraper extends HttpServlet implements Servlet {
 			if (!testAuthKey(in.getAuthKey())) {
 				respErr = new ResponseError(ERR_INFO.BAD_KEY);
 			}
-			String url = in.getUrl();
-
-			Scrap scrap = new Scrap(url, this.user.getUserId());
-			scrap.ustawienia_pobierzNaglowki(true);
-			boolean wynikScrapowania = scrap.wykonaj();
 
 			// odpowiedź
 			response.setContentType("application/json,charset=UTF-8");
@@ -110,6 +105,15 @@ public class Scraper extends HttpServlet implements Servlet {
 					return true;
 				}
 				// wygenerowanie odpowiedzi
+				String url = in.getUrl();
+
+				// scraper - inicjalizacja
+				Scrap scrap = new Scrap(url, this.user.getUserId());
+				// ustawienia - co scrapowac
+				scrap.ustawienia_pobierzNaglowki(in.getPobierzNaglowki());
+				scrap.ustawienia_pobierzLinki(in.getPobierzLinki());
+				// wykonanie
+				boolean wynikScrapowania = scrap.wykonaj();
 				out.print(ResponseBuilder
 						.getJson_ResponseScraper((wynikScrapowania ? "Operacja wykonana" : "operacja nieudana")));
 				// zapis w bazie informacji o zapytaniu

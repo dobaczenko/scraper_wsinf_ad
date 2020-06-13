@@ -184,7 +184,7 @@ public class PoleceniaMySQL extends PoleceniaDB {
 			con = ConnectorDB.getConnection();
 			// con.setAutoCommit(false);
 			PreparedStatement pstmt = con.prepareStatement(
-					"SELECT data_operacji, id, typ_wartosci, user_id, url, zawartosc FROM rejestr_wynikow;");
+					"SELECT data_operacji, id, typ_wartosci, user_id, url, zawartosc FROM rejestr_wynikow ORDER BY data_operacji DESC, id ASC;");
 			ResultSet rs = pstmt.executeQuery();
 
 			// con.commit();

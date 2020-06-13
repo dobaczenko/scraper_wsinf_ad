@@ -8,31 +8,48 @@
 	<h1 style="color: green;">Test Api</h1>
 
 	<p>
-		Testowy klucz dostêpu do czasu wprowadzenia bazy:
-		"bf0f6bbeb42167ab5a8a4cb90ec95db6"
-		<br>
-		<input type="text" id="klucz" placeholder="Klucz dostêpu">
-		<br>
-		<input type="text" id="adres" placeholder="adres strony">
-		<br>
-		<button onclick="aboutApi()">About</button><br>
-		<button onclick="scrapujApi()">scrapuj</button><br>
-		<button onclick="wynikiScrapowaniaApi()">wyniki scrapowania</button><br>
-		<br>
-		<br>
+	<div id="komunikat"></div>
 
-		Request:
-		<br>
+	<br>
+	<label for="klucz">klucz dostêpu</label>
+	<input type="text" id="klucz" placeholder="Klucz dostêpu">
+	<br>
+	<label for="adres">adres strony</label>
+	<input type="text" id="adres" placeholder="adres strony">
+	<br>
+	<input type="checkbox" id="scrap_el_h" name="scrap_el_h" value="true">
+	<label for="scrap_el_h"> nag³ówki</label>
+	<input type="checkbox" id="scrap_el_a" name="scrap_el_a" value="true">
+	<label for="scrap_el_a"> link</label>
+	<br>
+	<br>
+	<br>
+	<button onclick="aboutApi()">About</button>
+	<br>
+	<button onclick="scrapujApi()">scrapuj</button>
+	<br>
+	<button onclick="wynikiScrapowaniaApi()">wyniki scrapowania</button>
+	<br>
+	<br>
+		<table style="margin-left:auto; margin-right:auto;">
+		<!-- here goes our data! -->
+		</table>
+	<br>
+	Request:
+	<br>
 	<pre id="req" style="color: red"></pre>
 	<br>
 	Response:
 	<br>
 	<p class="result" style="color: green"></p>
+	
+	
+	<br>
+	<br>
+
 
 	</p>
-
 	<!-- Include the JavaScript file -->
 	<script src="./resources/gui.js"></script>
-
 </body>
 </html>

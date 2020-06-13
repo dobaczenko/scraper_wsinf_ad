@@ -1,7 +1,8 @@
 package scraper.api.err;
 
 public enum ERR_INFO {
-	BAD_KEY("INFO01", "Niepoprawny klucz autoryzacyjny");
+	BAD_KEY("INFO01", "Niepoprawny klucz autoryzacyjny"),
+	BAD_URL("SCRAPO01", "Niepoprawny adres url");
 
 	private String key;
 

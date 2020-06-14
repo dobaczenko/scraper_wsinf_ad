@@ -18,18 +18,15 @@ public class ResponseInfo {
 	private String kierunek;
 	private String uczelnia;
 	private String wersja;
-	private List<RejestrZapytanResp> rejestrZapytan;
 
 	public ResponseInfo() {
 	}
 
-	public ResponseInfo(String autor, String kierunek, String uczelnia, String wersja,
-			List<RejestrZapytanResp> rejestrZapytan) {
+	public ResponseInfo(String autor, String kierunek, String uczelnia, String wersja) {
 		this.autor = autor;
 		this.kierunek = kierunek;
 		this.uczelnia = uczelnia;
 		this.wersja = wersja;
-		this.rejestrZapytan = rejestrZapytan;
 	}
 
 	public String getAutor() {
@@ -62,14 +59,6 @@ public class ResponseInfo {
 
 	public void setWersja(String wersja) {
 		this.wersja = wersja;
-	}
-
-	public List<RejestrZapytanResp> getRejestrZapytan() {
-		return rejestrZapytan;
-	}
-
-	public void setRejestrZapytan(List<RejestrZapytanResp> rejestrZapytan) {
-		this.rejestrZapytan = rejestrZapytan;
 	}
 
 }

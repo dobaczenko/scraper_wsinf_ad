@@ -19,7 +19,7 @@ function aboutApi() {
 			result.innerHTML = this.responseText;
 			var jsonDane = JSON.parse(this.responseText);
 			
-			generujInformacjeZrwotna(jsonDane);
+			generujInformacjeZrwotna(jsonDane,"aboutApi");
 		}
 	};
 
@@ -32,6 +32,70 @@ function aboutApi() {
 	// Sending data with the request
 	xhr.send(data);
 }
+function rejestr_wywolanApi() {
+
+	let result = document.querySelector('.result');
+	let req = document.getElementById("req");
+	let klucz = document.querySelector('#klucz');
+
+	let xhr = new XMLHttpRequest();
+	let url = "./api/info/rejestr_wywolan";
+
+	xhr.open("POST", url, true);
+
+	xhr.setRequestHeader("Content-Type", "application/json");
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			result.innerHTML = this.responseText;
+			var jsonDane = JSON.parse(this.responseText);
+			
+			generujInformacjeZrwotna(jsonDane,"rejestr_wywolanApi");
+		}
+	};
+
+	// Converting JSON data to string
+	var data = JSON.stringify({
+		"authKey" : klucz.value
+	});
+	req.innerHTML = data;
+
+	// Sending data with the request
+	xhr.send(data);
+}
+
+function czyscApi() {
+
+	let result = document.querySelector('.result');
+	let req = document.getElementById("req");
+	let klucz = document.querySelector('#klucz');
+
+	let xhr = new XMLHttpRequest();
+	let url = "./api/scraper/czysc";
+
+	xhr.open("POST", url, true);
+
+	xhr.setRequestHeader("Content-Type", "application/json");
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			result.innerHTML = this.responseText;
+			var jsonDane = JSON.parse(this.responseText);
+			
+			generujInformacjeZrwotna(jsonDane,"czyscApi");
+		}
+	};
+
+	// Converting JSON data to string
+	var data = JSON.stringify({
+		"authKey" : klucz.value
+	});
+	req.innerHTML = data;
+
+	// Sending data with the request
+	xhr.send(data);
+}
+
 function scrapujApi() {
 
 	let result = document.querySelector('.result');
@@ -67,7 +131,7 @@ function scrapujApi() {
 			result.innerHTML = this.responseText;
 			var jsonDane = JSON.parse(this.responseText);
 			
-			generujInformacjeZrwotna(jsonDane);
+			generujInformacjeZrwotna(jsonDane,"scrapujApi");
 		}
 	};
 
@@ -101,7 +165,7 @@ function wynikiScrapowaniaApi() {
 			result.innerHTML = this.responseText;
 			var jsonDane = JSON.parse(this.responseText);
 				
-			generujInformacjeZrwotna(jsonDane);
+			generujInformacjeZrwotna(jsonDane,"wynikiScrapowaniaApi");
 		}
 	};
 
@@ -114,11 +178,11 @@ function wynikiScrapowaniaApi() {
 	// Sending data with the request
 	xhr.send(data);
 }
-function generujInformacjeZrwotna(jsonDane){
+function generujInformacjeZrwotna(jsonDane,tryb){
 	let table = document.querySelector("table");
 	clearTable(table);
 	
-	if(jsonDane.errorId!=null || jsonDane.podsumowanie!=null){
+	if((jsonDane.errorId!=null || tryb=="aboutApi" || tryb=="scrapujApi" || tryb=="czyscApi")){
 		let data = Object.keys(jsonDane);
 		var tab=[jsonDane];
 		generateTableHead(table, data);
@@ -129,6 +193,13 @@ function generujInformacjeZrwotna(jsonDane){
 							
 			generateTableHead(table, data);
 			generateTable(table, jsonDane.listaelementow);
+		}
+	}else if(jsonDane.rejestrZapytan!=undefined && jsonDane.rejestrZapytan!=null){
+		if(jsonDane.rejestrZapytan.length>0){
+			let data = Object.keys(jsonDane.rejestrZapytan[0]);
+							
+			generateTableHead(table, data);
+			generateTable(table, jsonDane.rejestrZapytan);
 		}
 	}
 }
@@ -164,9 +235,10 @@ function generateTableHead(table, data) {
 		
 		        for(var i=0;i<iMax;i++){
 			        for (var j = 0; j < row.length; j++) { 
-			            row[j].deleteCell(i); 
+			            row[j].deleteCell(0); 
 			        } 
 				}
+		        tble.deleteTHead()
 	        }
         }
     } 

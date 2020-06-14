@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import scraper.api.err.ERR_INFO;
 import scraper.api.request.RequestBuilder;
 import scraper.api.request.RequestInfo;
+import scraper.api.request.RequestOstatnieWywolania;
 import scraper.api.response.ResponseBuilder;
 import scraper.api.response.ResponseError;
+import scraper.api.response.ResponseOstatnieWywolania;
 import scraper.db.uzywalne.ObslugaDB;
 import scraper.entity.UserDane;
 
@@ -66,7 +68,13 @@ public class Info extends HttpServlet implements Servlet {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
 			break;
-		// check_db
+		case "rejestr_wywolan":
+			// metoda ostatnie wywolania
+			if (!apiOstatnieWywolania(response, request)) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			}
+			break;
+		// check_db apiOstatnieWywolania
 
 		default:
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -100,10 +108,47 @@ public class Info extends HttpServlet implements Servlet {
 					return true;
 				}
 				// wygenerowanie odpowiedzi
-				out.print(
-						ResponseBuilder.getJson_ResponseInfo(ObslugaDB.getPoleceniaDB().rejestrZapytan_selectLista()));
+				out.print(ResponseBuilder.getJson_ResponseInfo());
 				// zapis w bazie informacji o zapytaniu
 				ObslugaDB.getPoleceniaDB().rejestrZapytan_insert(new Date(), "about", user.getUserId());
+			}
+			return true;
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, null, e);
+			return false;
+		}
+	}
+
+	private boolean apiOstatnieWywolania(HttpServletResponse response, HttpServletRequest request) {
+		try {
+			// odczyt request
+			StringBuilder bufor = new StringBuilder();
+			BufferedReader bf = request.getReader();
+			String line;
+			while ((line = bf.readLine()) != null) {
+				bufor.append(line);
+			}
+			RequestOstatnieWywolania in = RequestBuilder.getRequestOstatnieWywolania(bufor.toString());
+
+			// coś tam na odczytanych danych, w tym mniejscu normalnie byłaby jakaś
+			// klasa/metoda operacyjna, ale na razie tak na skróty
+			ResponseError respErr = null;
+			if (!testAuthKey(in.getAuthKey())) {
+				respErr = new ResponseError(ERR_INFO.BAD_KEY);
+			}
+
+			// odpowiedź
+			response.setContentType("application/json,charset=UTF-8");
+			try (PrintWriter out = response.getWriter()) {
+				if (respErr != null) {
+					out.print(ResponseBuilder.getJson_ResponseError(respErr));
+					return true;
+				}
+				// wygenerowanie odpowiedzi
+				out.print(ResponseBuilder
+						.getJson_ResponseOstatnieWywolania(ObslugaDB.getPoleceniaDB().rejestrZapytan_selectLista()));
+				// zapis w bazie informacji o zapytaniu
+				ObslugaDB.getPoleceniaDB().rejestrZapytan_insert(new Date(), "apiOstatnieWywolania", user.getUserId());
 			}
 			return true;
 		} catch (Exception e) {

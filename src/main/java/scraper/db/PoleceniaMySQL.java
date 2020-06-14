@@ -215,4 +215,39 @@ public class PoleceniaMySQL extends PoleceniaDB {
 		}
 	}
 
+	@Override
+	public boolean rejestrWynikow_czysc() {
+		Connection con = null;
+		try {
+			con = ConnectorDB.getConnection();
+			con.setAutoCommit(false);
+			PreparedStatement pstmt = con.prepareStatement("TRUNCATE table rejestr_wynikow;");
+			pstmt.executeUpdate();
+
+			con.commit();
+
+			return true;
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, null, e);
+			if (con != null) {
+				try {
+					System.err.print("Transakcja wycofana");
+					con.rollback();
+				} catch (SQLException excep) {
+					LOG.log(Level.SEVERE, null, excep);
+				}
+			}
+			return false;
+		} finally {
+			if (con != null) {
+				try {
+					con.setAutoCommit(true);
+				} catch (SQLException ex) {
+					LOG.log(Level.SEVERE, null, ex);
+				}
+				ConnectorDB.freeConnection(con);
+			}
+		}
+	}
+
 }

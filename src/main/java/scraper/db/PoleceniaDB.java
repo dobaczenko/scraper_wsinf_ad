@@ -45,4 +45,11 @@ public abstract class PoleceniaDB {
 	 * @return
 	 */
 	public abstract List<RejestrWynikow> rejestrWynikow_selectAll();
+	
+	/**
+	 * kasuje zapisane elementy strony
+	 * @return
+	 */
+	public abstract boolean rejestrWynikow_czysc();
+	
 }

@@ -14,6 +14,16 @@ public class RequestBuilder {
 		RequestInfo ri = mapper.readValue(json, RequestInfo.class);
 		return ri;
 	}
+	public static RequestClear getRequestClear(String json) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		RequestClear ri = mapper.readValue(json, RequestClear.class);
+		return ri;
+	}
+	public static RequestOstatnieWywolania getRequestOstatnieWywolania(String json) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		RequestOstatnieWywolania ri = mapper.readValue(json, RequestOstatnieWywolania.class);
+		return ri;
+	}
 	public static RequestScraper getRequestScraper(String json) throws JsonMappingException, JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		RequestScraper ri = mapper.readValue(json, RequestScraper.class);

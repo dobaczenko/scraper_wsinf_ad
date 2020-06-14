@@ -32,7 +32,7 @@ public class ResponseBuilder {
 	 * 
 	 * @return
 	 */
-	public static String getJson_ResponseInfo(List<RejestrZapytan> listaZapytan) {
+	public static String getJson_ResponseInfo() {
 		try {
 			Prop prop = new Prop();
 			ResponseInfo obj = new ResponseInfo();
@@ -40,6 +40,21 @@ public class ResponseBuilder {
 			obj.setKierunek(prop.getKierunek());
 			obj.setUczelnia(prop.getUczelnia());
 			obj.setWersja(prop.getVersion());
+			
+			return budujJsonString(obj);
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, null, e);
+			return null;
+		}
+	}
+	/**
+	 * zwraca ResponseOstatnieWywolania w postaci string
+	 * 
+	 * @return
+	 */
+	public static String getJson_ResponseOstatnieWywolania(List<RejestrZapytan> listaZapytan) {
+		try {
+			ResponseOstatnieWywolania obj = new ResponseOstatnieWywolania();
 			List<RejestrZapytanResp> rejestrDlaJSON = new ArrayList<>();
 			if (listaZapytan != null) {
 				for (RejestrZapytan rz : listaZapytan) {
@@ -56,6 +71,22 @@ public class ResponseBuilder {
 			return null;
 		}
 	}
+	/**
+	 * zwraca ResponseScraper w postaci string
+	 * 
+	 * @return
+	 */
+	public static String getJson_ResponseClear(boolean podsumowanie) {
+		try {
+			ResponseClear obj = new ResponseClear();
+			obj.setPodsumowanie(podsumowanie?"Skasowano dane":"Wystapił problem");
+
+			return budujJsonString(obj);
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, null, e);
+			return null;
+		}
+	}
 
 	/**
 	 * zwraca ResponseScraper w postaci string
@@ -64,7 +95,6 @@ public class ResponseBuilder {
 	 */
 	public static String getJson_ResponseScraper(String podsumowanie) {
 		try {
-			Prop prop = new Prop();
 			ResponseScraper obj = new ResponseScraper();
 			obj.setPodsumowanie(podsumowanie);
 

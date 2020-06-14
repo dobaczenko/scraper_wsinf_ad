@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import scraper.Scrap;
 import scraper.api.err.ERR_INFO;
 import scraper.api.request.RequestBuilder;
+import scraper.api.request.RequestClear;
 import scraper.api.request.RequestInfo;
 import scraper.api.request.RequestListaScrapowanychElementow;
 import scraper.api.request.RequestScraper;
@@ -61,14 +62,20 @@ public class Scraper extends HttpServlet implements Servlet {
 		// url wskazuje na wykonanie operacji
 		switch (splits[splits.length - 1]) {
 		case "scrapuj":
-			// metoda info
+			// metoda wykonująca scrapowanie z dowolnej strony
 			if (!apiScrapuj(response, request)) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
 			break;
 		case "wyniki":
-			// metoda info
+			// metoda pobierająca listę pobranych elementów
 			if (!apiListaScrapowanychElementow(response, request)) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			}
+			break;
+		case "czysc":
+			// metoda czysczaca api
+			if (!apiClear(response, request)) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
 			break;
@@ -157,6 +164,44 @@ public class Scraper extends HttpServlet implements Servlet {
 						ObslugaDB.getPoleceniaDB().rejestrWynikow_selectAll()));
 				// zapis w bazie informacji o zapytaniu
 				ObslugaDB.getPoleceniaDB().rejestrZapytan_insert(new Date(), "apiListaScrapowanychElementow",
+						user.getUserId());
+			}
+			return true;
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, null, e);
+			return false;
+		}
+	}
+
+	private boolean apiClear(HttpServletResponse response, HttpServletRequest request) {
+		try {
+
+			// odczyt request
+			StringBuilder bufor = new StringBuilder();
+			BufferedReader bf = request.getReader();
+			String line;
+			while ((line = bf.readLine()) != null) {
+				bufor.append(line);
+			}
+			RequestClear in = RequestBuilder.getRequestClear((bufor.toString()));
+
+			// weryfikacja klucza
+			ResponseError respErr = null;
+			if (!testAuthKey(in.getAuthKey())) {
+				respErr = new ResponseError(ERR_INFO.BAD_KEY);
+			}
+
+			// odpowiedź
+			response.setContentType("application/json,charset=UTF-8");
+			try (PrintWriter out = response.getWriter()) {
+				if (respErr != null) {
+					out.print(ResponseBuilder.getJson_ResponseError(respErr));
+					return true;
+				}
+				// wygenerowanie odpowiedzi
+				out.print(ResponseBuilder.getJson_ResponseClear(ObslugaDB.getPoleceniaDB().rejestrWynikow_czysc()));
+				// zapis w bazie informacji o zapytaniu
+				ObslugaDB.getPoleceniaDB().rejestrZapytan_insert(new Date(), "apiClear",
 						user.getUserId());
 			}
 			return true;

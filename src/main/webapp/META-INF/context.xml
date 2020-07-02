@@ -5,6 +5,6 @@
 		idleMaxAge="240" idleConnectionTestPeriod="60" partitionCount="3"
 		acquireIncrement="1" maxConnectionsPerPartition="10"
 		minConnectionsPerPartition="3" statementsCacheSize="50"
-		releaseHelperThreads="4" name="jdbc/mysqldb" username="root"
+		releaseHelperThreads="4" name="jdbc/mysqldb" username="scraper" password="cHasło13"
 		url="jdbc:mysql://127.0.0.1:3306/pp_scraper_wsinf?useEncoding=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull" />
 </Context>
